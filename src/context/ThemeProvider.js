@@ -1,10 +1,14 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext(null);
 const ThemeUpdateContext = createContext(null);
 
 function ThemeProvider({ children }) {
   const [darkTheme, setDarkTheme] = useState(false);
+
+  useEffect(() => {
+    document.body.toggleAttribute("data-darktheme", darkTheme);
+  }, [darkTheme]);
 
   return (
     <ThemeContext.Provider value={darkTheme}>

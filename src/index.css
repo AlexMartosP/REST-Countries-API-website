@@ -6,6 +6,12 @@
   box-sizing: border-box;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Variables */
 :root {
   --dark-blue: hsl(209, 23%, 22%);
@@ -19,6 +25,29 @@
 /* General */
 body {
   font-family: "Nunito Sans", sans-serif;
+  background-color: var(--light-gray);
+}
+
+body[data-darktheme] {
+  background-color: var(--darker-blue);
+}
+
+.container {
+  --max-width: 1440px;
+  --padding: 3rem;
+
+  max-width: min(var(--max-width), 100% - var(--padding));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 /* Utility classes */
