@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as ChevronDown } from "../../assets/chevron-down-outline.svg";
 import { useTheme } from "../../context/ThemeProvider";
 // Styling
 import { FilterWrapper, SelectFilter, FilterDropdown } from "./Filter.styles";
 
-const regions = ["Africa", "America", "Asia", "Europe", "Oceania"];
+const regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 
 function Filter({ selectedFilter, setSelectedFilter }) {
   const darkTheme = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    document.addEventListener("click", (e) => {
+      if (
+        !e.target.classList.contains("dropdown") &&
+        !e.target.parentElement.classList.contains("dropdown")
+      ) {
+        setIsOpen(false);
+      }
+    });
+  }, []);
 
   function changeFilter(region) {
     if (region === selectedFilter) {
@@ -36,14 +47,16 @@ function Filter({ selectedFilter, setSelectedFilter }) {
         <SelectFilter
           darkTheme={darkTheme}
           onClick={() => setIsOpen((prev) => !prev)}
+          className="dropdown"
         >
           <span>{selectedFilter || "Filter by Region"}</span>
           <ChevronDown />
         </SelectFilter>
         {isOpen && (
-          <FilterDropdown darkTheme={darkTheme}>
+          <FilterDropdown darkTheme={darkTheme} className="dropdown">
             {regions.map((region) => (
               <div
+                key={region}
                 style={{
                   textDecoration:
                     region === selectedFilter ? "underline" : "none",

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeProvider";
 import { CardContainer, CardDetails, CardSingleDetail } from "./Card.styles";
 
@@ -6,9 +7,13 @@ function Card({ country }) {
 
   return (
     <CardContainer darkTheme={darkTheme}>
-      <img src={country.flag} alt={country.name} />
+      <Link to={country.alpha3Code}>
+        <img src={country.flag} alt={country.name} />
+      </Link>
       <CardDetails>
-        <h2>{country.name}</h2>
+        <Link to={country.alpha3Code}>
+          <h2>{country.name}</h2>
+        </Link>
         <div>
           <CardSingleDetail>
             Population: <span>{country.population}</span>

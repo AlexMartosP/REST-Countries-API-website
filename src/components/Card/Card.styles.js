@@ -13,6 +13,11 @@ export const CardContainer = styled.div`
     height: 180px;
     object-fit: cover;
   }
+
+  a {
+    color: ${(props) => (props.darkTheme ? "#fff" : "var(--very-dark-blue)")};
+    text-decoration: none;
+  }
 `;
 
 export const CardDetails = styled.div`

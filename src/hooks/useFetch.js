@@ -1,37 +1,91 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-function useFetch() {
+function useFetch(searchInput, selectedFilter) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
   const countriesArray = useRef(null);
+  const origCountries = useRef(null);
+  const currentFilter = useRef("");
+  const timeoutId = useRef(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          "https://restcountries.com/v2/all?fields=name,capital,population,region,flag"
-        );
-        const data = await res.json();
+  const fetchData = useCallback(async (url, name) => {
+    setLoading(true);
+    try {
+      const res = await fetch(url);
+
+      const data = await res.json();
+
+      if (name) {
+        name.toLowerCase();
+        origCountries.current = [...data];
+        countriesArray.current = data.filter((country) => {
+          let lowerName = country.name.toLowerCase();
+          return lowerName.includes(name);
+        });
+      } else {
         countriesArray.current = [...data];
-
-        let dataArr = [];
-        for (let i = 0; i < 48; i++) {
-          dataArr.push(data[i]);
-        }
-
-        setData(dataArr);
-        setError(false);
-      } catch (error) {
-        console.log(error);
-        setError(true);
       }
-      setLoading(false);
+
+      const dataArr = decreaseLength();
+
+      setData(dataArr);
+      setError(false);
+    } catch (error) {
+      setError(true);
+    }
+    setLoading(false);
+  }, []);
+
+  function decreaseLength() {
+    let dataArr = [];
+    const max =
+      countriesArray.current.length >= 48 ? 48 : countriesArray.current.length;
+    for (let i = 0; i < max; i++) {
+      dataArr.push(countriesArray.current[i]);
     }
 
-    fetchData();
-  }, []);
+    return dataArr;
+  }
+
+  useEffect(() => {
+    if (timeoutId.current) clearTimeout(timeoutId.current);
+
+    if (!selectedFilter && !searchInput) {
+      fetchData(
+        "https://restcountries.com/v2/all?fields=alpha3Code,name,capital,population,region,flag"
+      );
+    } else if (selectedFilter && !searchInput) {
+      if (selectedFilter === currentFilter.current) {
+        countriesArray.current = origCountries.current;
+
+        const dataArr = decreaseLength();
+        setData([...dataArr]);
+        setLoading(false);
+      } else {
+        fetchData(
+          `https://restcountries.com/v2/region/${selectedFilter}?fields=alpha3Code,name,capital,population,region,flag`
+        );
+        currentFilter.current = selectedFilter;
+      }
+    } else if (selectedFilter && searchInput) {
+      setLoading(true);
+      timeoutId.current = setTimeout(() => {
+        fetchData(
+          `https://restcountries.com/v2/region/${selectedFilter}?fields=alpha3Code,name,capital,population,region,flag`,
+          searchInput
+        );
+      }, 1000);
+    } else if (searchInput) {
+      setLoading(true);
+      timeoutId.current = setTimeout(() => {
+        fetchData(
+          `https://restcountries.com/v2/name/${searchInput}?fields=alpha3Code,name,capital,population,region,flag`
+        );
+      }, 1000);
+    }
+  }, [selectedFilter, searchInput, fetchData]);
 
   useEffect(() => {
     function addToData() {
@@ -39,10 +93,13 @@ function useFetch() {
         window.innerHeight + window.scrollY >=
         document.body.scrollHeight - 1000
       ) {
-        if (data.length <= data.length + 48) {
+        if (countriesArray.current.length > 48) {
           let newArr = [...data];
 
-          const max = newArr.length + 48 <= 250 ? newArr.length + 48 : 250;
+          const max =
+            newArr.length + 48 <= countriesArray.current.length
+              ? newArr.length + 48
+              : countriesArray.current.length;
 
           for (let i = newArr.length; i < max; i++) {
             newArr.push(countriesArray.current[i]);

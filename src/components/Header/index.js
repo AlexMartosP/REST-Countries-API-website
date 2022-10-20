@@ -4,6 +4,7 @@ import { ReactComponent as OutlineMoon } from "../../assets/moon-outline.svg";
 import { ReactComponent as FilledMoon } from "../../assets/moon.svg";
 // Styled components
 import { HeaderContainer, ThemeToggle } from "./Header.styles";
+import { Link } from "react-router-dom";
 
 function Header() {
   const darkTheme = useTheme();
@@ -13,7 +14,9 @@ function Header() {
     <HeaderContainer darkTheme={darkTheme}>
       <div className="container">
         <div className="flex--space-between">
-          <h1>Where in the world?</h1>
+          <Link to="/">
+            <h1>Where in the world?</h1>
+          </Link>
           <ThemeToggle onClick={() => setDarkTheme((prev) => !prev)}>
             {darkTheme ? <FilledMoon /> : <OutlineMoon />}
             <span>Dark Mode</span>

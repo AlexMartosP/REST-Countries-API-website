@@ -8,8 +8,10 @@ export const HeaderContainer = styled.header`
   fill: ${(props) => (props.darkTheme ? "#fff" : "var(--very-dark-blue)")};
   box-shadow: 0 0px 5px 0px #00000017;
 
-  h1 {
+  a {
     font-weight: 800;
+    text-decoration: none;
+    color: ${(props) => (props.darkTheme ? "#fff" : "var(--very-dark-blue)")};
 
     @media (min-width: 768px) {
       font-size: 1.25rem;

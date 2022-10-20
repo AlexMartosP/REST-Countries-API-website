@@ -28,7 +28,7 @@ export const SearchWrapper = styled.div`
 export const SearchInput = styled.input`
   background-color: transparent;
   border: none;
-  font-size: 0.75rem;
+  font-size: 1rem;
   width: 100%;
   color: ${(props) => (props.darkTheme ? "#fff" : "var(--very-dark-blue)")};
   outline: none;
