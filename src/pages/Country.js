@@ -24,8 +24,6 @@ function Country() {
 
   const darkTheme = useTheme();
 
-  console.log(data);
-
   return (
     <Container className="container" darkTheme={darkTheme}>
       <Button darkTheme={darkTheme} onClick={() => navigate("/")}>
