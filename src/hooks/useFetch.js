@@ -46,7 +46,6 @@ function useFetch(searchInput, selectedRegion) {
       fetchData(`https://restcountries.com/v2/all${fields}`);
     } else if (selectedRegion && !searchInput) {
       if (selectedRegion === currentRegion.current) {
-        console.log("here", regionCountries.current);
         countriesArray.current = regionCountries.current;
 
         const dataArr = decreaseLength(countriesArray.current);
