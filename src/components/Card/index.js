@@ -12,7 +12,7 @@ function Card({ country }) {
   return (
     <CardContainer darkTheme={darkTheme}>
       <Link to={country.alpha3Code}>
-        <img src={country.flag} alt={country.name} loading="auto" />
+        <img src={country.flag} alt={country.name} />
       </Link>
       <CardDetails>
         <Link to={country.alpha3Code}>
