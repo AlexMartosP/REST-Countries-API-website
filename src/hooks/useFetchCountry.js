@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const fields =
   "?fields=name,nativeName,capital,population,region,subregion,flag,currencies,languages,topLevelDomain,borders";
@@ -6,7 +7,7 @@ const fields =
 function useFetchCountry(code) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchData() {
@@ -35,16 +36,15 @@ function useFetchCountry(code) {
 
         setData(data);
       } catch (error) {
-        console.log(error);
-        setError(error);
+        navigate("/404");
       }
       setLoading(false);
     }
 
     fetchData();
-  }, [code]);
+  }, [code, navigate]);
 
-  return [data, loading, error];
+  return [data, loading];
 }
 
 export default useFetchCountry;

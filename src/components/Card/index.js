@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useTheme } from "../../context/ThemeProvider";
+import formatPopulation from "../../helper/formatPopulation";
 import { CardContainer, CardDetails, CardSingleDetail } from "./Card.styles";
 
 function Card({ country }) {
@@ -8,7 +9,7 @@ function Card({ country }) {
   return (
     <CardContainer darkTheme={darkTheme}>
       <Link to={country.alpha3Code}>
-        <img src={country.flag} alt={country.name} />
+        <img src={country.flag} alt={country.name} loading="auto" />
       </Link>
       <CardDetails>
         <Link to={country.alpha3Code}>
@@ -16,7 +17,7 @@ function Card({ country }) {
         </Link>
         <div>
           <CardSingleDetail>
-            Population: <span>{country.population}</span>
+            Population: <span>{formatPopulation(country.population)}</span>
           </CardSingleDetail>
           <CardSingleDetail>
             Region: <span>{country.region}</span>

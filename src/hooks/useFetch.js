@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 function useFetch(searchInput, selectedFilter) {
   const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const countriesArray = useRef(null);
