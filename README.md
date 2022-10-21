@@ -17,8 +17,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: https://www.frontendmentor.io/solutions/rest-countries-api-website-with-react-by-alexander-mp-UHso3-684a
+- Live Site URL: https://rest-countries-api-web-amp.netlify.app/
 
 ## My process
 
@@ -39,8 +39,9 @@ I learned so much from this challenge. It really tested my knowledge about fetch
 I also took this opportunity to test out my React Context skills and I learnt very much from it.
 
 I think this useFetch hook is the most complex useFetch hook i have built.
-All feedback on that hook and everything else are welcome! If you see an opportunity to more effecient fetch I would love to know.
-Also, if you have any tips to impore my use of styled-components I would love to hear, I am fairly new on using it :)
+All feedback on that hook and everything else are welcome!
+If you see an opportunity to more efficient fetch I would love to know.
+Also, if you have any tips to improve my use of styled-components I would love to hear, I am fairly new on using it :)
 
 ## Author
 
