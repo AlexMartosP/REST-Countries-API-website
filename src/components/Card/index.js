@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
+// Context
 import { useTheme } from "../../context/ThemeProvider";
+// Helper
 import formatPopulation from "../../helper/formatPopulation";
+// Styling
 import { CardContainer, CardDetails, CardSingleDetail } from "./Card.styles";
 
 function Card({ country }) {

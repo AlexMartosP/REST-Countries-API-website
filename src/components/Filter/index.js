@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { ReactComponent as ChevronDown } from "../../assets/chevron-down-outline.svg";
+// Context
 import { useTheme } from "../../context/ThemeProvider";
+// Assets
+import { ReactComponent as ChevronDown } from "../../assets/chevron-down-outline.svg";
 // Styling
 import { FilterWrapper, SelectFilter, FilterDropdown } from "./Filter.styles";
 
 const regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 
-function Filter({ selectedFilter, setSelectedFilter }) {
+function Filter({ selectedRegion, setSelectedRegion }) {
   const darkTheme = useTheme();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -23,17 +25,17 @@ function Filter({ selectedFilter, setSelectedFilter }) {
   }, []);
 
   function changeFilter(region) {
-    if (region === selectedFilter) {
-      return setSelectedFilter("");
+    if (region === selectedRegion) {
+      return setSelectedRegion("");
     }
-    setSelectedFilter(region);
+    setSelectedRegion(region);
   }
 
   return (
     <div>
       <select
-        value={selectedFilter}
-        onChange={(e) => setSelectedFilter(e.target.value)}
+        value={selectedRegion}
+        onChange={(e) => setSelectedRegion(e.target.value)}
         className="visually-hidden"
         aria-label="Filter by region"
       >
@@ -49,7 +51,7 @@ function Filter({ selectedFilter, setSelectedFilter }) {
           onClick={() => setIsOpen((prev) => !prev)}
           className="dropdown"
         >
-          <span>{selectedFilter || "Filter by Region"}</span>
+          <span>{selectedRegion || "Filter by Region"}</span>
           <ChevronDown />
         </SelectFilter>
         {isOpen && (
@@ -59,7 +61,7 @@ function Filter({ selectedFilter, setSelectedFilter }) {
                 key={region}
                 style={{
                   textDecoration:
-                    region === selectedFilter ? "underline" : "none",
+                    region === selectedRegion ? "underline" : "none",
                 }}
                 onClick={() => changeFilter(region)}
               >

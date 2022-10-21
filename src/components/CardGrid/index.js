@@ -1,6 +1,8 @@
 import { Grid, StateWrapper } from "./CardGrid.styles";
-import Card from "../Card";
+// Context
 import { useTheme } from "../../context/ThemeProvider";
+// Component
+import Card from "../Card";
 
 function CardGrid({ data, loading, error, searchInput }) {
   const darkTheme = useTheme();

@@ -1,6 +1,14 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import useFetchCountry from "../hooks/useFetchCountry";
-import { ReactComponent as ArrowBack } from "../assets/arrow-back-outline.svg";
+import { Helmet } from "react-helmet-async";
+// Context
+import { useTheme } from "../../context/ThemeProvider";
+// Hooks
+import useFetchCountry from "../../hooks/useFetchCountry";
+// Helper
+import formatPopulation from "../../helper/formatPopulation";
+// Assets
+import { ReactComponent as ArrowBack } from "../../assets/arrow-back-outline.svg";
+// Styling
 import {
   Container,
   Button,
@@ -10,9 +18,7 @@ import {
   ListWrapper,
   BordersWrapper,
 } from "./Country.styles";
-import { useTheme } from "../context/ThemeProvider";
-import formatPopulation from "../helper/formatPopulation";
-import { Helmet } from "react-helmet-async";
+import Fact from "../../components/Fact";
 
 function Country() {
   const { code } = useParams();
@@ -38,44 +44,30 @@ function Country() {
               <Title>{data.name}</Title>
               <ListWrapper>
                 <div>
-                  <p>
-                    Native Name: <span>{data.nativeName}</span>
-                  </p>
-                  <p>
-                    Population: <span>{formatPopulation(data.population)}</span>
-                  </p>
-                  <p>
-                    Region: <span>{data.region}</span>
-                  </p>
-                  <p>
-                    Sub Region: <span>{data.subregion}</span>
-                  </p>
-                  <p>
-                    Capital: <span>{data.capital}</span>
-                  </p>
+                  <Fact title="Native Name" value={data.nativeName} />
+                  <Fact
+                    title="Population"
+                    value={formatPopulation(data.population)}
+                  />
+                  <Fact title="Region" value={data.region} />
+                  <Fact title="Sub Region" value={data.subregion} />
+                  <Fact title="Capital" value={data.capital} />
                 </div>
                 <div>
-                  <p>
-                    Top Level Domain: <span>{data.topLevelDomain}</span>
-                  </p>
-                  <p>
-                    Currencies:{" "}
-                    {data.currencies.map((currency, index) => (
-                      <span key={currency.code}>
-                        {currency.name} ({currency.symbol})
-                        {index !== data.currencies.length - 1 && ", "}
-                      </span>
-                    ))}
-                  </p>
-                  <p>
-                    Languages:{" "}
-                    {data.languages.map((language, index) => (
-                      <span key={language.iso639_2}>
-                        {language.name}
-                        {index !== data.currencies.length - 1 && ", "}
-                      </span>
-                    ))}
-                  </p>
+                  <Fact title="Top Level Domain" value={data.topLevelDomain} />
+                  <Fact
+                    title="Currencies"
+                    value={data.currencies}
+                    list
+                    unique="code"
+                    symbol
+                  />
+                  <Fact
+                    title="Languages"
+                    value={data.languages}
+                    list
+                    unique="iso639_2"
+                  />
                 </div>
               </ListWrapper>
               {data.borders.length > 0 && (

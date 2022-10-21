@@ -69,7 +69,6 @@ export const ListWrapper = styled.div`
   flex-direction: column;
   gap: 1.5rem;
   margin-block-start: 1.5rem;
-  font-weight: 600;
 
   @media (min-width: 500px) {
     flex-direction: row;
@@ -83,14 +82,6 @@ export const ListWrapper = styled.div`
   @media (min-width: 1024px) {
     flex-direction: row;
     justify-content: space-between;
-  }
-
-  p:not(:last-child) {
-    margin-block-end: 1.5rem;
-  }
-
-  span {
-    font-weight: 300;
   }
 `;
 

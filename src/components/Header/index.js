@@ -1,8 +1,8 @@
 import { useTheme, useThemeUpdate } from "../../context/ThemeProvider";
-// Icon
+// Assets
 import { ReactComponent as OutlineMoon } from "../../assets/moon-outline.svg";
 import { ReactComponent as FilledMoon } from "../../assets/moon.svg";
-// Styled components
+// Styling
 import { HeaderContainer, ThemeToggle } from "./Header.styles";
 import { Link } from "react-router-dom";
 

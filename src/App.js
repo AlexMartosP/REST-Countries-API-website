@@ -1,12 +1,13 @@
-import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
+import { HelmetProvider } from "react-helmet-async";
 // Context
 import ThemeProvider from "./context/ThemeProvider";
-import Country from "./pages/Country";
 // Pages
 import Home from "./pages/Home";
+import Country from "./pages/Country/";
 import NotFound from "./pages/NotFound";
+// Component
+import Header from "./components/Header";
 
 function App() {
   return (

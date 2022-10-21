@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+// Helper
+import decreaseLength from "../helper/decreaseLength";
 
-function useFetch(searchInput, selectedFilter) {
+const fields = "?fields=alpha3Code,name,capital,population,region,flag";
+
+function useFetch(searchInput, selectedRegion) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   const countriesArray = useRef(null);
-  const origCountries = useRef(null);
-  const currentFilter = useRef("");
+  const regionCountries = useRef(null);
+  const currentRegion = useRef("");
   const timeoutId = useRef(null);
 
   const fetchData = useCallback(async (url, name) => {
@@ -18,17 +22,17 @@ function useFetch(searchInput, selectedFilter) {
       const data = await res.json();
 
       if (name) {
-        name.toLowerCase();
-        origCountries.current = [...data];
+        const loswerSearch = name.toLowerCase();
+        regionCountries.current = [...data];
         countriesArray.current = data.filter((country) => {
           let lowerName = country.name.toLowerCase();
-          return lowerName.includes(name);
+          return lowerName.includes(loswerSearch);
         });
       } else {
         countriesArray.current = [...data];
       }
 
-      const dataArr = decreaseLength();
+      const dataArr = decreaseLength(countriesArray.current);
 
       setData(dataArr);
       setError(false);
@@ -38,54 +42,42 @@ function useFetch(searchInput, selectedFilter) {
     setLoading(false);
   }, []);
 
-  function decreaseLength() {
-    let dataArr = [];
-    const max =
-      countriesArray.current.length >= 48 ? 48 : countriesArray.current.length;
-    for (let i = 0; i < max; i++) {
-      dataArr.push(countriesArray.current[i]);
-    }
-
-    return dataArr;
-  }
-
   useEffect(() => {
     if (timeoutId.current) clearTimeout(timeoutId.current);
 
-    if (!selectedFilter && !searchInput) {
-      fetchData(
-        "https://restcountries.com/v2/all?fields=alpha3Code,name,capital,population,region,flag"
-      );
-    } else if (selectedFilter && !searchInput) {
-      if (selectedFilter === currentFilter.current) {
-        countriesArray.current = origCountries.current;
+    if (!selectedRegion && !searchInput) {
+      fetchData(`https://restcountries.com/v2/all${fields}`);
+    } else if (selectedRegion && !searchInput) {
+      if (selectedRegion === currentRegion.current) {
+        countriesArray.current = regionCountries.current;
 
-        const dataArr = decreaseLength();
+        const dataArr = decreaseLength(countriesArray.current);
+
         setData([...dataArr]);
         setLoading(false);
       } else {
         fetchData(
-          `https://restcountries.com/v2/region/${selectedFilter}?fields=alpha3Code,name,capital,population,region,flag`
+          `https://restcountries.com/v2/region/${selectedRegion}${fields}`
         );
-        currentFilter.current = selectedFilter;
+        currentRegion.current = selectedRegion;
       }
-    } else if (selectedFilter && searchInput) {
+    } else if (selectedRegion && searchInput) {
       setLoading(true);
+
       timeoutId.current = setTimeout(() => {
         fetchData(
-          `https://restcountries.com/v2/region/${selectedFilter}?fields=alpha3Code,name,capital,population,region,flag`,
+          `https://restcountries.com/v2/region/${selectedRegion}${fields}`,
           searchInput
         );
       }, 1000);
     } else if (searchInput) {
       setLoading(true);
+
       timeoutId.current = setTimeout(() => {
-        fetchData(
-          `https://restcountries.com/v2/name/${searchInput}?fields=alpha3Code,name,capital,population,region,flag`
-        );
+        fetchData(`https://restcountries.com/v2/name/${searchInput}${fields}`);
       }, 1000);
     }
-  }, [selectedFilter, searchInput, fetchData]);
+  }, [selectedRegion, searchInput, fetchData]);
 
   useEffect(() => {
     function addToData() {

@@ -1,16 +1,19 @@
 import { useState } from "react";
-import SearchField from "../components/SearchField";
-import Filter from "../components/Filter";
-import { HomeContainer, SearchContainer } from "./Home.styles";
-import useFetch from "../hooks/useFetch";
-import CardGrid from "../components/CardGrid";
 import { Helmet } from "react-helmet-async";
+// Hooks
+import useFetch from "../../hooks/useFetch";
+// Components
+import SearchField from "../../components/SearchField";
+import Filter from "../../components/Filter";
+import CardGrid from "../../components/CardGrid";
+// Styling
+import { HomeContainer, SearchContainer } from "./Home.styles";
 
 function Home() {
   const [searchInput, setSearchInput] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("");
 
-  const [data, loading, error] = useFetch(searchInput, selectedFilter);
+  const [data, loading, error] = useFetch(searchInput, selectedRegion);
 
   return (
     <>
@@ -21,8 +24,8 @@ function Home() {
             setSearchInput={setSearchInput}
           />
           <Filter
-            selectedFilter={selectedFilter}
-            setSelectedFilter={setSelectedFilter}
+            selectedRegion={selectedRegion}
+            setSelectedRegion={setSelectedRegion}
           />
         </SearchContainer>
         <CardGrid

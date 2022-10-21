@@ -7,6 +7,7 @@ const fields =
 function useFetchCountry(code) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
 
   useEffect(() => {
