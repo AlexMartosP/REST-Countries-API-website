@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 // Helper
 import decreaseLength from "../helper/decreaseLength";
+import searchInRegion from "../helper/searchInRegion";
 
 const fields = "?fields=alpha3Code,name,capital,population,region,flag";
 
@@ -22,15 +23,11 @@ function useFetch(searchInput, selectedRegion) {
       const data = await res.json();
 
       if (name) {
-        const loswerSearch = name.toLowerCase();
-        regionCountries.current = [...data];
-        countriesArray.current = data.filter((country) => {
-          let lowerName = country.name.toLowerCase();
-          return lowerName.includes(loswerSearch);
-        });
+        countriesArray.current = searchInRegion(name, data);
       } else {
         countriesArray.current = [...data];
       }
+      regionCountries.current = [...data];
 
       const dataArr = decreaseLength(countriesArray.current);
 
@@ -49,6 +46,7 @@ function useFetch(searchInput, selectedRegion) {
       fetchData(`https://restcountries.com/v2/all${fields}`);
     } else if (selectedRegion && !searchInput) {
       if (selectedRegion === currentRegion.current) {
+        console.log("here", regionCountries.current);
         countriesArray.current = regionCountries.current;
 
         const dataArr = decreaseLength(countriesArray.current);
@@ -59,17 +57,28 @@ function useFetch(searchInput, selectedRegion) {
         fetchData(
           `https://restcountries.com/v2/region/${selectedRegion}${fields}`
         );
+
         currentRegion.current = selectedRegion;
       }
     } else if (selectedRegion && searchInput) {
       setLoading(true);
+      if (selectedRegion === currentRegion.current) {
+        const filteredData = searchInRegion(
+          searchInput,
+          regionCountries.current
+        );
 
-      timeoutId.current = setTimeout(() => {
+        const dataArr = decreaseLength(filteredData);
+        setData(dataArr);
+        setLoading(false);
+      } else {
         fetchData(
           `https://restcountries.com/v2/region/${selectedRegion}${fields}`,
           searchInput
         );
-      }, 1000);
+
+        currentRegion.current = selectedRegion;
+      }
     } else if (searchInput) {
       setLoading(true);
 
